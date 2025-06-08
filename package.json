@@ -1,0 +1,25 @@
+{
+  "name": "generador-solicitudes-docentes-pro",
+  "version": "2.0.0",
+  "description": "Generador de documentos con Netlify Functions y Gemini API.",
+  "main": "index.js",
+  "scripts": {
+    "start": "netlify dev"
+  },
+  "keywords": [
+    "docente",
+    "peru",
+    "solicitud",
+    "netlify",
+    "gemini"
+  ],
+  "author": "Juan Manuel Caicedo Oliva & Gemini",
+  "license": "MIT",
+  "dependencies": {
+    "@google/generative-ai": "^0.12.0",
+    "docx": "^8.5.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.23.1"
+  }
+}

@@ -1,0 +1,15 @@
+# Archivo de configuración para Netlify
+
+[build]
+  # Nuestro sitio estático sigue estando en la raíz.
+  publish = "."
+
+[functions]
+  # Le indicamos a Netlify que nuestras funciones vivirán en esta carpeta.
+  directory = "netlify/functions/"
+
+[dev]
+  # Configuración para el comando `netlify dev`
+  publish = "."
+  port = 8888
+  autoLaunch = true

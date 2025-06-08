@@ -1,0 +1,22 @@
+# Dependencias de Node.js
+# Esta carpeta contiene miles de archivos y no debe subirse a Git.
+# Netlify la reconstruirá automáticamente al desplegar.
+/node_modules
+
+# Archivos de entorno
+# ¡IMPORTANTE! Este archivo contiene tu API key secreta.
+# Ignorarlo previene que se suba a un repositorio público en GitHub.
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Carpeta de Netlify
+# Netlify crea esta carpeta para sus procesos internos y no es necesaria en el repositorio.
+.netlify
+
+# Registros de errores y depuración
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

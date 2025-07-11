@@ -1,59 +1,60 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Documentos para Docentes</title>
     <!-- ===== INICIO DEL CÓDIGO GUARDIA DE SEGURIDAD FINAL (Compatible con Netlify) ===== -->
-<script type="module">
-    // 1. IMPORTACIONES (Siempre al principio)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    <script type="module">
+        // 1. IMPORTACIONES (Siempre al principio)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-    // 2. LÓGICA DEL GUARDIA
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    // Si la "llave" de la Suite (`?autorizado=true`) NO está, el guardia actúa.
-    if (urlParams.get('autorizado') !== 'true') {
-        
-        // La configuración de Firebase. Es necesaria para que funcione en Netlify.
-        // La seguridad real está en los "Dominios Autorizados" de la consola de Firebase.
-        const firebaseConfig = {
-            apiKey: "AIzaSyC-Og-9Ju4aWSbmwa6b4OpoHzjPzd073VI",
-            authDomain: "auth.caicedoeduca.com",
-            projectId: "delta-cortex-437020-h5",
-            storageBucket: "delta-cortex-437020-h5.appspot.com",
-            messagingSenderId: "423600255022",
-            appId: "1:423600255022:web:210337d8730803c500afbf",
-            measurementId: "G-2KJ74JH382"
-        };
+        // 2. LÓGICA DEL GUARDIA
+        const urlParams = new URLSearchParams(window.location.search);
 
-        const suiteLoginPageUrl = 'https://www.caicedoeduca.com/';
+        // Si la "llave" de la Suite (`?autorizado=true`) NO está, el guardia actúa.
+        if (urlParams.get('autorizado') !== 'true') {
 
-        try {
-            const app = initializeApp(firebaseConfig);
-            const auth = getAuth(app);
+            // La configuración de Firebase. Es necesaria para que funcione en Netlify.
+            // La seguridad real está en los "Dominios Autorizados" de la consola de Firebase.
+            const firebaseConfig = {
+                apiKey: "AIzaSyC-Og-9Ju4aWSbmwa6b4OpoHzjPzd073VI",
+                authDomain: "auth.caicedoeduca.com",
+                projectId: "delta-cortex-437020-h5",
+                storageBucket: "delta-cortex-437020-h5.appspot.com",
+                messagingSenderId: "423600255022",
+                appId: "1:423600255022:web:210337d8730803c500afbf",
+                measurementId: "G-2KJ74JH382"
+            };
 
-            onAuthStateChanged(auth, (user) => {
-                if (!user) {
-                    // Si no hay sesión de usuario, redirige a la suite.
-                    console.log("GUARDIA: Acceso no autorizado. Redirigiendo a la suite...");
-                    window.top.location.href = suiteLoginPageUrl;
-                } else {
-                    console.log("GUARDIA: Usuario autenticado. Acceso permitido.");
-                }
-            });
-        } catch (error) {
-            console.error("GUARDIA: Error crítico.", error);
-            window.top.location.href = suiteLoginPageUrl;
+            const suiteLoginPageUrl = 'https://www.caicedoeduca.com/';
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+
+                onAuthStateChanged(auth, (user) => {
+                    if (!user) {
+                        // Si no hay sesión de usuario, redirige a la suite.
+                        console.log("GUARDIA: Acceso no autorizado. Redirigiendo a la suite...");
+                        window.top.location.href = suiteLoginPageUrl;
+                    } else {
+                        console.log("GUARDIA: Usuario autenticado. Acceso permitido.");
+                    }
+                });
+            } catch (error) {
+                console.error("GUARDIA: Error crítico.", error);
+                window.top.location.href = suiteLoginPageUrl;
+            }
+        } else {
+            // Si la llave de la Suite está presente, el guardia no hace nada.
+            console.log("GUARDIA: Acceso autorizado por la Suite. El guardia no actuará.");
         }
-    } else {
-        // Si la llave de la Suite está presente, el guardia no hace nada.
-        console.log("GUARDIA: Acceso autorizado por la Suite. El guardia no actuará.");
-    }
-</script>
-<!-- ===== FIN DEL CÓDIGO GUARDIA DE SEGURIDAD FINAL (Compatible con Netlify) ===== -->
-    
+    </script>
+    <!-- ===== FIN DEL CÓDIGO GUARDIA DE SEGURIDAD FINAL (Compatible con Netlify) ===== -->
+
     <!-- Tailwind CSS para un diseño moderno y adaptable -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -62,26 +63,99 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', sans-serif; background-color: #f0f4f8; }
-        .document-preview { background-color: white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 2.5rem; line-height: 1.7; color: #333; min-height: 842px; max-width: 595px; margin: 2rem auto; border-radius: 8px; font-family: 'Times New Roman', Times, serif; }
-        .form-container, .preview-container { transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; }
-        .is-hidden { opacity: 0; transform: scale(0.95); display: none !important; }
-        .btn-primary { background-color: #2563eb; color: white; transition: all 0.3s; }
-        .btn-primary:hover:not(:disabled) { background-color: #1d4ed8; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .btn-primary:disabled { background-color: #93c5fd; cursor: not-allowed; }
-        .btn-secondary { background-color: #4b5563; color: white; transition: all 0.3s; }
-        .btn-secondary:hover { background-color: #374151; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .form-label { display: block; font-weight: 700; color: #4A5568; margin-bottom: 0.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        input, select { border: 1px solid #d1d5db; border-radius: 0.375rem; }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+
+        .document-preview {
+            background-color: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            line-height: 1.7;
+            color: #333;
+            min-height: 842px;
+            max-width: 595px;
+            margin: 2rem auto;
+            border-radius: 8px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .form-container,
+        .preview-container {
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        .is-hidden {
+            opacity: 0;
+            transform: scale(0.95);
+            display: none !important;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:disabled {
+            background-color: #93c5fd;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background-color: #4b5563;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #374151;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 700;
+            color: #4A5568;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        input,
+        select {
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+        }
     </style>
 </head>
+
 <body class="p-4 md:p-8">
 
     <!-- Mensaje Flotante de Carga -->
-    <div id="loadingOverlay" class="is-hidden fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center z-50 transition-opacity duration-300">
+    <div id="loadingOverlay"
+        class="is-hidden fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center z-50 transition-opacity duration-300">
         <div class="bg-white p-6 rounded-lg shadow-xl flex items-center space-x-4">
-            <svg class="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <svg class="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+            </svg>
             <span id="loadingText" class="text-lg font-semibold text-gray-700">Generando documento...</span>
         </div>
     </div>
@@ -89,27 +163,81 @@
     <div class="max-w-4xl mx-auto">
         <!-- Formulario -->
         <div id="formContainer" class="form-container bg-white p-6 md:p-8 rounded-lg shadow-xl">
-            <div class="text-center mb-8"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">Generador de Solicitudes</h1><p class="text-gray-500 mt-2">Completa los datos para crear tu documento oficial.</p></div>
+            <div class="text-center mb-8">
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Generador de Solicitudes</h1>
+                <p class="text-gray-500 mt-2">Completa los datos para crear tu documento oficial.</p>
+            </div>
             <form id="documentForm" class="space-y-6">
-                <fieldset class="border-t border-gray-200 pt-6"><legend class="text-lg font-semibold text-blue-700 px-2">1. Datos del Solicitante</legend><div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4"><div class="md:col-span-2"><label for="teacherName" class="form-label">Nombres y Apellidos</label><input type="text" id="teacherName" class="w-full p-3" value="Juan Manuel Caicedo Oliva"></div><div><label for="teacherDNI" class="form-label">DNI</label><input type="text" id="teacherDNI" class="w-full p-3"></div><div><label for="teacherUgel" class="form-label">UGEL</label><input type="text" id="teacherUgel" class="w-full p-3" value="03 San Martín"></div><div class="md:col-span-2"><label for="teacherSchool" class="form-label">Institución Educativa</label><input type="text" id="teacherSchool" class="w-full p-3" value="I.E. Ángel Custodio Ramirez"></div></div></fieldset>
-                <fieldset class="border-t border-gray-200 pt-6"><legend class="text-lg font-semibold text-blue-700 px-2">2. Datos del Documento</legend><div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4"><div><label for="recipientName" class="form-label">Nombres del Destinatario</label><input type="text" id="recipientName" placeholder="Ej: Lic. María Rojas" class="w-full p-3"></div><div><label for="recipientTitle" class="form-label">Cargo del Destinatario</label><input type="text" id="recipientTitle" placeholder="Ej: Directora" class="w-full p-3"></div><div class="md:col-span-2"><label for="docType" class="form-label">Tipo de Documento</label><select id="docType" class="w-full p-3"><option value="" disabled selected>Selecciona el tipo de documento...</option><option value="onomastico">Solicitud de Permiso por Onomástico</option><option value="salud">Solicitud de Permiso por Motivos de Salud</option><option value="cita_medica">Solicitud de Permiso por Cita Médica</option><option value="personales">Solicitud de Permiso por Asuntos Personales</option><option value="inasistencia">Justificación por Inasistencia</option><option value="tardanza">Justificación por Tardanza</option><option value="salida_anticipada">Solicitud de Salida Anticipada</option></select></div><div id="dateFieldContainer" class="md:col-span-2"></div><div class="md:col-span-2"><label for="requestCity" class="form-label">Ciudad de Redacción</label><input type="text" id="requestCity" value="Tarapoto" class="w-full p-3"></div></div></fieldset>
-                <div class="pt-6 text-center"><button type="button" id="generateBtn" class="w-full md:w-auto btn-primary font-bold py-3 px-8 rounded-full shadow-lg">Generar Documento</button></div>
+                <fieldset class="border-t border-gray-200 pt-6">
+                    <legend class="text-lg font-semibold text-blue-700 px-2">1. Datos del Solicitante</legend>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
+                        <div class="md:col-span-2"><label for="teacherName" class="form-label">Nombres y
+                                Apellidos</label><input type="text" id="teacherName" class="w-full p-3"
+                                value="Juan Manuel Caicedo Oliva"></div>
+                        <div><label for="teacherDNI" class="form-label">DNI</label><input type="text" id="teacherDNI"
+                                class="w-full p-3"></div>
+                        <div><label for="teacherUgel" class="form-label">UGEL</label><input type="text" id="teacherUgel"
+                                class="w-full p-3" value="03 San Martín"></div>
+                        <div class="md:col-span-2"><label for="teacherSchool" class="form-label">Institución
+                                Educativa</label><input type="text" id="teacherSchool" class="w-full p-3"
+                                value="I.E. Ángel Custodio Ramirez"></div>
+                    </div>
+                </fieldset>
+                <fieldset class="border-t border-gray-200 pt-6">
+                    <legend class="text-lg font-semibold text-blue-700 px-2">2. Datos del Documento</legend>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mt-4">
+                        <div><label for="recipientName" class="form-label">Nombres del Destinatario</label><input
+                                type="text" id="recipientName" placeholder="Ej: Lic. María Rojas" class="w-full p-3">
+                        </div>
+                        <div><label for="recipientTitle" class="form-label">Cargo del Destinatario</label><input
+                                type="text" id="recipientTitle" placeholder="Ej: Directora" class="w-full p-3"></div>
+                        <div class="md:col-span-2"><label for="docType" class="form-label">Tipo de
+                                Documento</label><select id="docType" class="w-full p-3">
+                                <option value="" disabled selected>Selecciona el tipo de documento...</option>
+                                <option value="onomastico">Solicitud de Permiso por Onomástico</option>
+                                <option value="salud">Solicitud de Permiso por Motivos de Salud</option>
+                                <option value="cita_medica">Solicitud de Permiso por Cita Médica</option>
+                                <option value="personales">Solicitud de Permiso por Asuntos Personales</option>
+                                <option value="inasistencia">Justificación por Inasistencia</option>
+                                <option value="tardanza">Justificación por Tardanza</option>
+                                <option value="salida_anticipada">Solicitud de Salida Anticipada</option>
+                            </select></div>
+                        <div id="dateFieldContainer" class="md:col-span-2"></div>
+                        <div class="md:col-span-2"><label for="requestCity" class="form-label">Ciudad de
+                                Redacción</label><input type="text" id="requestCity" value="Tarapoto"
+                                class="w-full p-3"></div>
+                    </div>
+                </fieldset>
+                <div class="pt-6 text-center"><button type="button" id="generateBtn"
+                        class="w-full md:w-auto btn-primary font-bold py-3 px-8 rounded-full shadow-lg">Generar
+                        Documento</button></div>
             </form>
         </div>
         <!-- Vista Previa (inicialmente oculta) -->
         <div id="previewContainer" class="preview-container is-hidden">
             <div id="documentPreview" class="document-preview"></div>
             <div class="flex flex-col md:flex-row gap-4 mt-6 justify-center">
-                 <button type="button" id="editBtn" class="w-full md:w-auto btn-secondary font-bold py-3 px-8 rounded-full">Volver a Editar</button>
-                 <button type="button" id="downloadBtn" class="w-full md:w-auto btn-primary font-bold py-3 px-8 rounded-full">
+                <button type="button" id="editBtn"
+                    class="w-full md:w-auto btn-secondary font-bold py-3 px-8 rounded-full">Volver a Editar</button>
+                <button type="button" id="downloadBtn"
+                    class="w-full md:w-auto btn-primary font-bold py-3 px-8 rounded-full">
                     <span id="downloadBtnText">Descargar como Word (.docx)</span>
-                    <svg id="downloadSpinner" class="hidden animate-spin h-5 w-5 text-white mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                 </button>
+                    <svg id="downloadSpinner" class="hidden animate-spin h-5 w-5 text-white mx-auto"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
 
     <script>
+        // =================== INICIA EL CÓDIGO A PEGAR ===================
+
         // --- ELEMENTOS DEL DOM ---
         const formContainer = document.getElementById('formContainer');
         const previewContainer = document.getElementById('previewContainer');
@@ -123,11 +251,15 @@
         const loadingText = document.getElementById('loadingText');
         const downloadBtnText = document.getElementById('downloadBtnText');
         const downloadSpinner = document.getElementById('downloadSpinner');
-        
+
         let generatedTextForWord = ''; // Variable para almacenar el texto de la IA
         let formDataForWord = {}; // Variable para almacenar los datos del formulario
 
-        // --- LÓGICA DEL FORMULARIO (MANTIENE LAS ETIQUETAS DINÁMICAS CORRECTAS) ---
+        // --- 👨‍💻 NUEVAS CONSTANTES PARA LA LÓGICA DE REINTENTOS ---
+        const MAXIMOS_INTENTOS = 3;
+        const ESPERA_ENTRE_INTENTOS_MS = 2500; // Aumentamos ligeramente la espera
+
+        // --- LÓGICA DEL FORMULARIO (SIN CAMBIOS) ---
         const dynamicFieldTemplates = {
             '': '',
             'onomastico': `<div><label for="eventDate" class="form-label">FECHA EN QUE SE DIO O SE DARÁ EL PERMISO POR ONOMÁSTICO</label><input type="date" id="eventDate" class="w-full p-3"></div>`,
@@ -138,12 +270,9 @@
             'tardanza': `<div><label for="eventDate" class="form-label">FECHA EN QUE OCURRIÓ LA TARDANZA</label><input type="date" id="eventDate" class="w-full p-3"></div>`,
             'salida_anticipada': `<div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4"><div><label for="eventDate" class="form-label">FECHA DEL PERMISO DE SALIDA ANTICIPADA</label><input type="date" id="eventDate" class="w-full p-3"></div><div><label for="eventTime" class="form-label">HORA DE SALIDA</label><input type="time" id="eventTime" class="w-full p-3"></div></div>`
         };
-
-        const sumillaMap = { 'onomastico': 'Permiso por onomástico.','salud': 'Permiso por motivos de salud.','cita_medica': 'Permiso por cita médica.','personales': 'Permiso por asuntos personales.','inasistencia': 'Justificación de inasistencia.','tardanza': 'Justificación de tardanza.','salida_anticipada': 'Permiso de salida anticipada.' };
-
+        const sumillaMap = { 'onomastico': 'Permiso por onomástico.', 'salud': 'Permiso por motivos de salud.', 'cita_medica': 'Permiso por cita médica.', 'personales': 'Permiso por asuntos personales.', 'inasistencia': 'Justificación de inasistencia.', 'tardanza': 'Justificación de tardanza.', 'salida_anticipada': 'Permiso de salida anticipada.' };
         function updateDynamicFields() { dateFieldContainer.innerHTML = dynamicFieldTemplates[docTypeSelect.value] || ''; }
         function formatDate(date) { const options = { year: 'numeric', month: 'long', day: 'numeric' }; return date.toLocaleDateString('es-ES', options); }
-
         function getFormData() {
             const requestDate = new Date();
             const eventDate = document.getElementById('eventDate')?.value;
@@ -159,47 +288,101 @@
             };
         }
 
+        // --- ✨ NUEVA FUNCIÓN ROBUSTA PARA LLAMAR A LA IA ---
+        async function callGenerateContentAPI(payload) {
+            let ultimoError = null;
+
+            for (let intento = 1; intento <= MAXIMOS_INTENTOS; intento++) {
+                try {
+                    // Actualizamos la UI para informar al usuario
+                    if (intento > 1) {
+                        loadingText.textContent = `La red está lenta... Reintentando (${intento}/${MAXIMOS_INTENTOS})...`;
+                    } else {
+                        loadingText.textContent = "Generando texto con IA...";
+                    }
+
+                    console.log(`Iniciando llamada a la API, intento #${intento}...`);
+
+                    const response = await fetch('/.netlify/functions/generate-text', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        console.log(`¡Éxito en el intento #${intento}!`);
+                        const data = await response.json();
+                        return data.generatedText; // ¡Misión cumplida! Devolvemos el texto.
+                    }
+
+                    if (response.status === 502 || response.status === 503 || response.status === 504) {
+                        throw new Error(`Error de servidor temporal: ${response.status}`);
+                    }
+
+                    const errorData = await response.text();
+                    throw new Error(`Error de API no recuperable: ${response.status} - ${errorData}`);
+
+                } catch (error) {
+                    console.error(`Falló el intento #${intento}:`, error.message);
+                    ultimoError = error;
+
+                    if (intento === MAXIMOS_INTENTOS) {
+                        break;
+                    }
+
+                    await new Promise(resolve => setTimeout(resolve, ESPERA_ENTRE_INTENTOS_MS));
+                }
+            }
+
+            console.error("Todos los reintentos fallaron.");
+            throw ultimoError; // Lanzamos el último error si todos los intentos fracasan.
+        };
+
+        // --- FUNCIÓN `generatePreview` ACTUALIZADA Y MÁS LIMPIA ---
         async function generatePreview() {
             const data = getFormData();
             if (!data.teacherName || !data.teacherDNI || !data.teacherSchool || !data.recipientName || !data.recipientTitle || !data.docType || !data.eventDate) {
-                alert('Por favor, completa todos los campos del formulario.'); return;
+                alert('Por favor, completa todos los campos del formulario.');
+                return;
             }
-            
-            loadingText.textContent = "Generando texto con IA...";
+
             loadingOverlay.classList.remove('is-hidden');
+            generateBtn.disabled = true;
 
             try {
-                const textResponse = await fetch('/.netlify/functions/generate-text', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-                if (!textResponse.ok) { const error = await textResponse.json(); throw new Error(`Error en la IA: ${error.error}`); }
-                const { generatedText } = await textResponse.json();
-                
-                generatedTextForWord = generatedText; 
+                // ✨ AHORA SOLO LLAMAMOS A NUESTRA FUNCIÓN ROBUSTA
+                const generatedText = await callGenerateContentAPI(data);
+
+                generatedTextForWord = generatedText;
                 formDataForWord = data;
 
                 const previewHTML = `<p style="text-align: center; font-weight: bold; font-size: 0.9em; margin-bottom: 2em; text-transform: uppercase;">"${data.yearName}"</p><p style="margin-bottom: 2em;"><strong>SOLICITO:</strong> ${data.sumilla.toUpperCase()}</p><p style="margin-bottom: 1em;"><strong>SEÑOR(A):<br>${data.recipientName.toUpperCase()}<br>${data.recipientTitle.toUpperCase()} DE LA ${data.teacherSchool.toUpperCase()}</strong></p><p style="margin-bottom: 2em;">Presente.-</p><div style="text-align: justify; text-indent: 3em;"><p>Yo, <strong>${data.teacherName.toUpperCase()}</strong>, identificado(a) con DNI N° <strong>${data.teacherDNI}</strong>, docente de esta prestigiosa institución educativa; ante usted con el debido respeto me presento y expongo:</p><br/><p>${generatedText}</p></div><p style="text-align: justify; margin-top: 2em;">POR LO EXPUESTO:</p><p style="text-align: justify; text-indent: 3em; margin-top: 1em;">Ruego a usted, Señor(a) ${data.recipientTitle}, acceder a mi petición por ser de justicia.</p><p style="text-align: right; margin-top: 3em; margin-bottom: 5em;">${data.requestCity}, ${formatDate(data.requestDate)}</p><div style="width: 50%; margin: auto; text-align: center;"><p>...........................................................</p><p><strong>${data.teacherName.toUpperCase()}</strong></p><p><strong>DNI: ${data.teacherDNI}</strong></p></div>`;
-                
+
                 documentPreview.innerHTML = previewHTML;
                 formContainer.classList.add('is-hidden');
                 previewContainer.classList.remove('is-hidden');
                 window.scrollTo(0, 0);
 
-            } catch(error) {
-                alert(`Ocurrió un error: ${error.message}`);
+            } catch (error) {
+                alert(`No se pudo generar el documento después de varios intentos. Error: ${error.message}. Por favor, revisa tu conexión e inténtalo de nuevo.`);
             } finally {
                 loadingOverlay.classList.add('is-hidden');
+                generateBtn.disabled = false;
             }
         }
-        
+
+        // --- FUNCIÓN `downloadWordFile` (SIN CAMBIOS) ---
         async function downloadWordFile() {
             downloadBtn.disabled = true;
             downloadSpinner.classList.remove('hidden');
             downloadBtnText.classList.add('hidden');
-            
+
             try {
                 const dataForWord = { ...formDataForWord, generatedText: generatedTextForWord };
+                // Nota: Se podría aplicar la misma lógica de reintentos aquí si fuera necesario.
                 const wordResponse = await fetch('/.netlify/functions/generate-word', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dataForWord) });
                 if (!wordResponse.ok) { const error = await wordResponse.json(); throw new Error(`Error al crear el archivo: ${error.error}`); }
-                
+
                 const blob = await wordResponse.blob();
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -210,7 +393,7 @@
                 a.click();
                 window.URL.revokeObjectURL(url);
                 a.remove();
-            } catch(error) {
+            } catch (error) {
                 alert(`Ocurrió un error al descargar: ${error.message}`);
             } finally {
                 downloadBtn.disabled = false;
@@ -219,11 +402,15 @@
             }
         }
 
+        // --- EVENT LISTENERS (SIN CAMBIOS) ---
         generateBtn.addEventListener('click', generatePreview);
         downloadBtn.addEventListener('click', downloadWordFile);
         editBtn.addEventListener('click', () => { previewContainer.classList.add('is-hidden'); formContainer.classList.remove('is-hidden'); });
         docTypeSelect.addEventListener('change', updateDynamicFields);
         updateDynamicFields();
+
+        // =================== FINALIZA EL CÓDIGO A PEGAR ===================
     </script>
 </body>
+
 </html>
